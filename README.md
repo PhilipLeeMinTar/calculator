@@ -1,2 +1,2 @@
-# calculator
-Calculator project done as part of Odin Project
+# Calculator Project
+Part of Odin Project: https://www.theodinproject.com/lessons/foundations-calculator
