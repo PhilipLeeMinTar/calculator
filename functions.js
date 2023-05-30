@@ -32,20 +32,34 @@ const displayValue = () => {
             display.textContent += event.target.textContent;
         })
     });
+
+    let value;
+    let inputOperator;
     let operators = document.querySelectorAll('.operators');
     operators.forEach((operator)=>{
-        operator.addEventListener("click", (event)=>{
-            currentNumber = parseFloat(display.textContent);
-            switch(operator.textContent) {
-                case '+': previousNumber = add(previousNumber, currentNumber); break; //need to do this before the 2nd number
-                case '-': previousNumber = subtract(previousNumber, currentNumber); break;
-                case '×': multiply(previousNumber, currentNumber); break;
-                case '÷': divide(previousNumber, currentNumber); break;
-            }
-            
+        operator.addEventListener("click", (event) => {
+            value = parseInt(display.textContent);
+            inputOperator = event.target.textContent
         })
     })
+    
+
     // display.textContent += lol;
 }
 
+let operators = document.querySelectorAll('.operators');
+operators.forEach((operator)=>{
+    operator.addEventListener("click", (event)=>{
+        currentNumber = parseFloat(display.textContent);
+        switch(operator.textContent) {
+            case '+': previousNumber = add(previousNumber, currentNumber); break; //need to do this before the 2nd number
+            case '-': previousNumber = subtract(previousNumber, currentNumber); break;
+            case '×': multiply(previousNumber, currentNumber); break;
+            case '÷': divide(previousNumber, currentNumber); break;
+        }
+        
+    })
+})
 
+
+let firstValue = displayValue()
