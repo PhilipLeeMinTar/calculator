@@ -13,14 +13,19 @@ let op = ""
 let pressEqual = false;
 
 digitButtons.forEach(digit => {
-    digit.addEventListener('click', (event)=>{
-        if (pressEqual == true) {
-            currentNumber = "";
-            pressEqual = false;
-        }    
-        displayValue(event.target.textContent);
-    })
+    digit.addEventListener('click', pressDigit);
 })
+
+function pressDigit(event) {
+    if (pressEqual == true) {
+        currentNumber = "";
+        pressEqual = false;
+    }    
+    if (isNaN(event.target.textContent)){
+        displayValue(event.key); return;
+    }
+    displayValue(event.target.textContent);
+}
 
 function displayValue(numberString) {
     if (currentNumber.length === 10) return;
@@ -34,15 +39,18 @@ function displayValue(numberString) {
 }
 
 operators.forEach(operator => {
-    operator.addEventListener('click', (event)=>{
-        previousNumber = currentNumber;
-        prevDisplay.textContent = previousNumber + " " + event.target.textContent;
-        curDisplay.textContent = "0"
-        currentNumber = "";
-        op = event.target.textContent;
-    })
+    operator.addEventListener('click', ()=>saveOperator(operator.textContent));
 })
 
+function saveOperator(sign){
+    previousNumber = currentNumber;
+    op = sign;
+    // console.log(event);
+    // op = event.target.textContent;
+    prevDisplay.textContent = previousNumber + " " + op;
+    curDisplay.textContent = "0"
+    currentNumber = "";
+}
 equal.addEventListener('click', operate);
 
 function operate(){
@@ -86,21 +94,46 @@ clear.addEventListener('click', ()=>{
     pressEqual = false;
 })
 
-deleted.addEventListener('click', ()=>{
+deleted.addEventListener('click', deleteNum)
+
+function deleteNum(){
     currentNumber = currentNumber.slice(0,-1);
     if (currentNumber == ""){
         curDisplay.textContent = "0";
     } else {
         curDisplay.textContent = currentNumber;
     }
-})
+}
 
-period.addEventListener('click', ()=>{
+period.addEventListener('click', addPeriod);
+
+function addPeriod(){
     if (!currentNumber.includes(".")){
         displayValue(".");
     }
-})
+}
 
+document.addEventListener('keydown', (event)=>{
+    let name = event.key;
+    console.log(name);
+    console.log(event);
+    if (!isNaN(name)){
+        pressDigit(event);
+        console.log("here");
+    } else if (name === "Backspace"){
+        deleteNum();
+    } else if (name === "."){
+        addPeriod();
+    } else if (name === "+" || name === "-") {
+        saveOperator(name);
+    } else if (name === "*" ){
+        saveOperator("×");
+    } else if (name === "/"){
+        saveOperator("÷");
+    } else if (name === "=" || "Enter") {
+        operate();
+    }
+})
 
 /*THINGS TO TAKE NOTE:
 -There can still be overflow in display after operate in curDisplay
